@@ -8,7 +8,7 @@ import flixel.addons.transition.FlxTransitionableState;
 
 class FreeplayState extends FlxTransitionableState
 {
-	var songList:Array<String> = ['bopeebo','fresh','dad-battle','spookeez'];
+	var songList:Array<String> = ['bopeebo','fresh','dad-battle','spookeez','south'];
 	var songTextGroup:Array<FlxText> = [];
 	var curSelected:Int = 0;
 	override public function create():Void
@@ -18,7 +18,7 @@ class FreeplayState extends FlxTransitionableState
 		var songIndex:Int = 0;
 		for(song in songList)
 		{
-			var songText:FlxText = new FlxText(0, 200+(100*songIndex), 0, song, 32);
+			var songText:FlxText = new FlxText(0, 100+(50*songIndex), 0, song, 32);
 			songText.screenCenter(X);
 			songText.ID = songIndex;
 			add(songText);
