@@ -6,12 +6,13 @@ class Character extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
+	public var stunned:Bool = false;
+	public var charId:String = "";
+	public var danceIntervals:Int = 2;
 	private final specialAnimationLength:Float = 1;
 	private var isPlayingSpecialAnimation:Bool = false;
 	private var specialAnimationTimer:Float = 0.0;
-	public var charId:String = "";
 	private var danced:Bool = true;
-	public var stunned:Bool = false;
 
 	public function new(x:Float, y:Float,charId:String)
 	{
@@ -34,6 +35,7 @@ class Character extends FlxSprite
 				addOffset('danceRight');
 
 				playAnim('danceRight',true);
+				danceIntervals = 1;
 			case "dad":
 				frames = Paths.fromSparrow("DADDY_DEAREST");
 				animation.addByPrefix('idle', 'Dad idle dance', 24,false);
@@ -90,6 +92,7 @@ class Character extends FlxSprite
 				addOffset("singLEFT", 120,-8);
 				addOffset("singDOWN", -40, -147);
 				playAnim('danceRight',true);
+				danceIntervals = 1;
 		}
 		antialiasing = true;
 	}

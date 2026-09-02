@@ -51,7 +51,6 @@ class PlayState extends FlxTransitionableState
 	private var camZooming:Bool = false;
 	public static var curSong:String = "";
 
-	private var gfSpeed:Int = 1;
 	private var health:Float = 1;
 	private var combo:Int = 0;
 
@@ -117,9 +116,8 @@ class PlayState extends FlxTransitionableState
 
 		new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 		{
-			gf.dance();
-			dad.dance();
-			boyfriend.dance();
+			currentBeat = swagCounter-5;
+			beatHit();
 			switch (swagCounter)
 			{
 				case 0:
@@ -163,12 +161,10 @@ class PlayState extends FlxTransitionableState
 						}
 					});
 					FlxG.sound.play('assets/sounds/introGo.ogg', 0.6);
-				case 4:
 			}
 
 			swagCounter += 1;
-			// generateSong('fresh');
-		}, 5);
+		}, 4);
 
 		// add(strumLine);
 
@@ -394,13 +390,13 @@ class PlayState extends FlxTransitionableState
 			{
 				case 16:
 					camZooming = true;
-					gfSpeed = 2;
+					gf.danceIntervals = 2;
 				case 48:
-					gfSpeed = 1;
+					gf.danceIntervals = 1;
 				case 80:
-					gfSpeed = 2;
+					gf.danceIntervals = 2;
 				case 112:
-					gfSpeed = 1;
+					gf.danceIntervals = 1;
 			}
 		}
 		
@@ -871,19 +867,18 @@ class PlayState extends FlxTransitionableState
 
 	private function beatHit():Void
 	{
+		trace(currentBeat);
 		if (camZooming && FlxG.camera.zoom < 1.35 && currentBeat % 4 == 0)
 			FlxG.camera.zoom += 0.025;
 
 		healthHeads.setGraphicSize(Std.int(healthHeads.width + 20));
 
-		if (currentBeat % gfSpeed == 0)
-			gf.dance();
-
-		if(currentBeat % 2 == 0)
-		{
+		if(currentBeat % dad.danceIntervals == 0)
 			dad.dance();
-			boyfriend.dance();	
-		}
+		if(currentBeat % boyfriend.danceIntervals == 0)
+			boyfriend.dance();
+		if(currentBeat % gf.danceIntervals == 0)
+			gf.dance();
 
 	}
 	private function stepHit():Void
