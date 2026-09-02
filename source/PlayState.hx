@@ -42,7 +42,6 @@ class PlayState extends FlxTransitionableState
 	private var unspawnNotes:Array<Note> = [];
 
 	private var strumLine:FlxSprite;
-	private var curSection:Int = 0;
 
 	private var camFollow:FlxObject;
 	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
@@ -516,16 +515,6 @@ class PlayState extends FlxTransitionableState
 
 	private function popUpScore():Void
 	{
-		/*boyfriend.playAnim('hey');
-		vocals.volume = 1;*/
-
-		var placement:String = Std.string(combo);
-
-		var coolText:FlxText = new FlxText(0, 0, 0, placement, 32);
-		coolText.screenCenter();
-		coolText.x = FlxG.width * 0.75;
-		//
-
 		var rating:FlxSprite = new FlxSprite();
 
 		var daRating:String = "shit";
@@ -533,23 +522,14 @@ class PlayState extends FlxTransitionableState
 		if (combo > 60)
 			daRating = 'sick';
 		else if (combo > 12)
-			daRating = 'good'
+			daRating = 'good';
 		else if (combo > 4)
 			daRating = 'bad';
-		rating.loadGraphic(Paths.image(daRating));
-		rating.screenCenter();
-		rating.x = coolText.x - 40;
-		rating.y -= 60;
-		rating.acceleration.y = 550;
-		rating.velocity.y -= FlxG.random.int(140, 175);
-		rating.setGraphicSize(Std.int(rating.width * 0.7));
-		rating.updateHitbox();
-		rating.antialiasing = true;
-		rating.velocity.x -= FlxG.random.int(0, 10);
 
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image("combo"));
 		comboSpr.screenCenter();
-		comboSpr.x = coolText.x;
+		comboSpr.x += 150;
+		comboSpr.y += 100;
 		comboSpr.acceleration.y = 600;
 		comboSpr.antialiasing = true;
 		comboSpr.velocity.y -= 150;
@@ -557,6 +537,16 @@ class PlayState extends FlxTransitionableState
 		comboSpr.updateHitbox();
 		comboSpr.velocity.x += FlxG.random.int(1, 10);
 		add(comboSpr);
+
+		rating.loadGraphic(Paths.image(daRating));
+		rating.x = comboSpr.x - 40;
+		rating.y = comboSpr.y - 60;
+		rating.acceleration.y = 550;
+		rating.velocity.y -= FlxG.random.int(140, 175);
+		rating.setGraphicSize(Std.int(rating.width * 0.7));
+		rating.updateHitbox();
+		rating.antialiasing = true;
+		rating.velocity.x -= FlxG.random.int(0, 10);
 		add(rating);
 
 		var seperatedScore:Array<Int> = [];
@@ -569,9 +559,8 @@ class PlayState extends FlxTransitionableState
 		for (i in seperatedScore)
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image('num'+ Std.int(i)));
-			numScore.screenCenter();
-			numScore.x = coolText.x + (43 * daLoop) - 90;
-			numScore.y += 80;
+			numScore.x = comboSpr.x + (43 * daLoop) - 90;
+			numScore.y = comboSpr.y + 80;
 			numScore.antialiasing = true;
 			numScore.setGraphicSize(Std.int(numScore.width * 0.5));
 			numScore.updateHitbox();
@@ -591,9 +580,6 @@ class PlayState extends FlxTransitionableState
 			daLoop++;
 		}
 
-		coolText.text = Std.string(seperatedScore);
-		// add(coolText);
-
 		FlxTween.tween(rating, {alpha: 0}, 0.2, {
 			startDelay: Conductor.crochet * 0.001
 		});
@@ -601,15 +587,12 @@ class PlayState extends FlxTransitionableState
 		FlxTween.tween(comboSpr, {alpha: 0}, 0.2, {
 			onComplete: function(tween:FlxTween)
 			{
-				coolText.destroy();
 				comboSpr.destroy();
 
 				rating.destroy();
 			},
 			startDelay: Conductor.crochet * 0.001
 		});
-
-		curSection += 1;
 	}
 
 	private function keyShit():Void
