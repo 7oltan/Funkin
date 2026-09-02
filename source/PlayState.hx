@@ -177,6 +177,7 @@ class PlayState extends FlxTransitionableState
 		healthHeads.scrollFactor.set();
 		add(healthHeads);
 
+
 		super.create();
 	}
 
@@ -186,6 +187,14 @@ class PlayState extends FlxTransitionableState
 		FlxG.sound.music.resume();
 		vocalsPlayer.play();
 		vocalsOpponent.play();
+	}
+
+	function endSong():Void
+	{
+		FlxG.sound.music.stop();
+		vocalsPlayer.stop();
+		vocalsOpponent.stop();
+		FlxG.switchState(new FreeplayState());
 	}
 
 	var debugNum:Int = 0;
@@ -217,7 +226,8 @@ class PlayState extends FlxTransitionableState
 
 		scrollSpeed = songChartData.scrollSpeed.hard;
 
-		FlxG.sound.playMusic(Paths.inst(dataPath));
+		FlxG.sound.playMusic(Paths.inst(dataPath),1,false);
+		FlxG.sound.music.onComplete = endSong;
 		FlxG.sound.music.pause();
 		vocalsOpponent = new FlxSound().loadEmbedded(Paths.vocals(dataPath,opponentCharacter));
 		FlxG.sound.list.add(vocalsOpponent);
@@ -399,10 +409,7 @@ class PlayState extends FlxTransitionableState
 
 		if(FlxG.keys.justPressed.ENTER)
 		{
-			FlxG.sound.music.stop();
-			vocalsPlayer.stop();
-			vocalsOpponent.stop();
-			FlxG.switchState(new FreeplayState());
+			endSong();
 		}
 
 		//very bare bones
