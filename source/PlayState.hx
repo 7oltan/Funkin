@@ -201,7 +201,7 @@ class PlayState extends FlxTransitionableState
 
 	private function generateSong(dataPath:String):Void
 	{
-		trace(dataPath);
+		trace("SONG PATH: "+dataPath);
 		// FlxG.log.add(ChartParser.parse());
 		generatedMusic = true;
 
@@ -262,7 +262,6 @@ class PlayState extends FlxTransitionableState
 		}
 
 		unspawnNotes.sort(sortByShit);
-		trace('FIRST NOTE ' + unspawnNotes[0]);
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int
@@ -592,9 +591,6 @@ class PlayState extends FlxTransitionableState
 			daLoop++;
 		}
 
-		trace(combo);
-		trace(seperatedScore);
-
 		coolText.text = Std.string(seperatedScore);
 		// add(coolText);
 
@@ -644,7 +640,6 @@ class PlayState extends FlxTransitionableState
 				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate)
 				{
 					possibleNotes.push(daNote);
-					trace('NOTE-' + daNote.strumTime + ' ADDED');
 				}
 			});
 
@@ -800,7 +795,6 @@ class PlayState extends FlxTransitionableState
 
 	function noteCheck(keyP:Bool, note:Note):Void
 	{
-		trace(note.noteData + ' note check here ' + keyP);
 		if (keyP)
 			goodNoteHit(note);
 		else
@@ -850,7 +844,6 @@ class PlayState extends FlxTransitionableState
 
 	private function beatHit():Void
 	{
-		trace(currentBeat);
 		if (camZooming && FlxG.camera.zoom < 1.35 && currentBeat % 4 == 0)
 			FlxG.camera.zoom += 0.025;
 
