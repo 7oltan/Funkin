@@ -30,7 +30,7 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		var tex = FlxAtlasFrames.fromSparrow(AssetPaths.NOTE_assets__png, AssetPaths.NOTE_assets__xml);
+		var tex = FlxAtlasFrames.fromSparrow(Paths.image("NOTE_assets"), Paths.xml("NOTE_assets"));
 		frames = tex;
 		animation.addByPrefix('greenScroll', 'green0');
 		animation.addByPrefix('redScroll', 'red0');
@@ -54,20 +54,18 @@ class Note extends FlxSprite
 		switch (Math.abs(noteData))
 		{
 			case 1:
-				x += swagWidth * 2;
-				animation.play('greenScroll');
-			case 2:
-				x += swagWidth * 3;
-				animation.play('redScroll');
-			case 3:
-				x += swagWidth * 1;
-				animation.play('blueScroll');
-			case 4:
 				x += swagWidth * 0;
 				animation.play('purpleScroll');
+			case 2:
+				x += swagWidth * 1;
+				animation.play('blueScroll');
+			case 3:
+				x += swagWidth * 2;
+				animation.play('greenScroll');
+			case 4:
+				x += swagWidth * 3;
+				animation.play('redScroll');
 		}
-
-		trace(prevNote);
 
 		if (noteData < 0 && prevNote != null)
 		{
@@ -79,13 +77,13 @@ class Note extends FlxSprite
 			switch (noteData)
 			{
 				case -1:
-					animation.play('greenholdend');
-				case -2:
-					animation.play('redholdend');
-				case -3:
-					animation.play('blueholdend');
-				case -4:
 					animation.play('purpleholdend');
+				case -2:
+					animation.play('blueholdend');
+				case -3:
+					animation.play('greenholdend');
+				case -4:
+					animation.play('redholdend');
 			}
 
 			updateHitbox();
@@ -97,13 +95,13 @@ class Note extends FlxSprite
 				switch (prevNote.noteData)
 				{
 					case -1:
-						prevNote.animation.play('greenhold');
-					case -2:
-						prevNote.animation.play('redhold');
-					case -3:
-						prevNote.animation.play('bluehold');
-					case -4:
 						prevNote.animation.play('purplehold');
+					case -2:
+						prevNote.animation.play('bluehold');
+					case -3:
+						prevNote.animation.play('greenhold');
+					case -4:
+						prevNote.animation.play('redhold');
 				}
 
 				prevNote.offset.y = -19;

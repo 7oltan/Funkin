@@ -14,20 +14,16 @@ import flixel.util.FlxColor;
  */
 class Charting extends FlxState
 {
-	var bf:Boyfriend;
-	var dad:Dad;
 	var char:Character;
 	var textAnim:FlxText;
 	var dumbTexts:FlxTypedGroup<FlxText>;
 	var animList:Array<String> = [];
 	var curAnim:Int = 0;
-	var isDad:Bool = false;
 	var camFollow:FlxObject;
 
-	public function new(isDad:Bool = false)
+	public function new()
 	{
 		super();
-		this.isDad = isDad;
 	}
 
 	override function create()
@@ -38,24 +34,10 @@ class Charting extends FlxState
 		gridBG.scrollFactor.set(0.5, 0.5);
 		add(gridBG);
 
-		if (isDad)
-		{
-			dad = new Dad(0, 0);
-			dad.screenCenter();
-			dad.debugMode = true;
-			add(dad);
-
-			char = dad;
-		}
-		else
-		{
-			bf = new Boyfriend(0, 0);
-			bf.screenCenter();
-			bf.debugMode = true;
-			add(bf);
-
-			char = bf;
-		}
+		char = new Character(0, 0,'spooky');
+		char.screenCenter();
+		char.debugMode = true;
+		add(char);
 
 		dumbTexts = new FlxTypedGroup<FlxText>();
 		add(dumbTexts);
