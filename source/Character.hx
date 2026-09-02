@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxPoint;
 import flixel.FlxSprite;
 
 class Character extends FlxSprite
@@ -8,6 +9,7 @@ class Character extends FlxSprite
 	public var debugMode:Bool = false;
 	public var charId:String = "";
 	public var danceIntervals:Int = 2;
+	public var cameraFollowPoint:FlxPoint;
 	private final specialAnimationLength:Float = 1;
 	private var isPlayingSpecialAnimation:Bool = false;
 	private var specialAnimationTimer:Float = 0.0;
@@ -87,8 +89,12 @@ class Character extends FlxSprite
 				danceIntervals = 1;
 		}
 		dance();
+		animation.finish();
 		updateHitbox();
 		this.y = y-this.height;
+
+		cameraFollowPoint = FlxPoint.get(this.x+this.width/2,this.y+this.height/2);
+
 		antialiasing = true;
 	}
 
@@ -139,6 +145,12 @@ class Character extends FlxSprite
 		{
 			playAnim('idle',true);
 		}
+	}
+
+	override public function destroy()
+	{
+		super.destroy();
+		cameraFollowPoint.put();
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)

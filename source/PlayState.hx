@@ -145,7 +145,7 @@ class PlayState extends FlxTransitionableState
 		// add(strumLine);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
-		camFollow.setPosition(dad.getGraphicMidpoint().x + 150, dad.getGraphicMidpoint().y - 100);
+		camFollow.setPosition(dad.cameraFollowPoint.x + 150, dad.cameraFollowPoint.y - 100);
 		add(camFollow);
 
 		FlxG.camera.follow(camFollow, LOCKON, 0.04);
@@ -426,10 +426,10 @@ class PlayState extends FlxTransitionableState
 							eventCharacter = eventData;
 						else
 							eventCharacter = eventData.char;
-						if(eventCharacter == 1)
-							camFollow.setPosition(dad.getGraphicMidpoint().x + 150, dad.getGraphicMidpoint().y - 100);
+						if(eventCharacter == 1) 
+							camFollow.setPosition(dad.cameraFollowPoint.x + 150, dad.cameraFollowPoint.y - 100);
 						if(eventCharacter == 0)
-							camFollow.setPosition(boyfriend.getGraphicMidpoint().x - 100, boyfriend.getGraphicMidpoint().y - 100);
+							camFollow.setPosition(boyfriend.cameraFollowPoint.x - 100, boyfriend.cameraFollowPoint.y - 100);
 					case "PlayAnimation":
 						if(eventData.target == "bf")
 							boyfriend.playSpecialAnim(eventData.anim);
