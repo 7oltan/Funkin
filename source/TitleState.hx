@@ -73,7 +73,7 @@ class TitleState extends FlxTransitionableState
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.ENTER && !transitioning)
+		if (Controls.ACCEPT_P && !transitioning)
 		{
 			FlxG.camera.flash(FlxColor.WHITE, 1);
 

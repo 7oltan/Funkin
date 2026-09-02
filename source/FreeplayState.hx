@@ -63,16 +63,16 @@ class FreeplayState extends FlxTransitionableState
 
 	override function update(elapsed:Float)
 	{
-		if(FlxG.keys.justPressed.DOWN)
+		if(Controls.DOWN_P)
 			changeSelection(1);
-		if(FlxG.keys.justPressed.UP)
+		if(Controls.UP_P)
 			changeSelection(-1);
-		if(FlxG.keys.justPressed.RIGHT)
+		if(Controls.RIGHT_P)
 			changeDifficulty(1);
-		if(FlxG.keys.justPressed.LEFT)
+		if(Controls.LEFT_P)
 			changeDifficulty(-1);
 
-		if (FlxG.keys.justPressed.ENTER)
+		if (Controls.ACCEPT_P)
 		{
 			PlayState.curSong = songList[curSelected];
 			PlayState.curDifficulty = difficultyList[curDifficulty];
