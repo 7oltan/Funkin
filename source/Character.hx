@@ -6,7 +6,6 @@ class Character extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
-	public var stunned:Bool = false;
 	public var charId:String = "";
 	public var danceIntervals:Int = 2;
 	private final specialAnimationLength:Float = 1;

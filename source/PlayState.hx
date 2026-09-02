@@ -49,6 +49,7 @@ class PlayState extends FlxTransitionableState
 
 	private var camZooming:Bool = false;
 	public static var curSong:String = "";
+	public static var curDifficulty:String = "";
 
 	private var health:Float = 1;
 	private var combo:Int = 0;
@@ -223,8 +224,8 @@ class PlayState extends FlxTransitionableState
 		
 		Conductor.changeBPM(timeChanges[0].bpm);
 
-		scrollSpeed = songChartData.scrollSpeed.hard;
-
+		scrollSpeed = Reflect.getProperty(songChartData.scrollSpeed,curDifficulty);
+		
 		FlxG.sound.playMusic(Paths.inst(dataPath),1,false);
 		FlxG.sound.music.onComplete = endSong;
 		FlxG.sound.music.pause();
@@ -235,7 +236,7 @@ class PlayState extends FlxTransitionableState
 
 		events = songChartData.events;
 
-		var songDataNotes:Array<Dynamic> = songChartData.notes.hard;
+		var songDataNotes:Array<Dynamic> = Reflect.getProperty(songChartData.notes,curDifficulty);
 		for(noteData in songDataNotes)
 		{
 			var noteTime:Float = noteData.t;
@@ -250,6 +251,8 @@ class PlayState extends FlxTransitionableState
 
 			var swagNote:Note = new Note(noteTime, noteKind, oldNote);
 			swagNote.scrollFactor.set(0, 0);
+			swagNote.active = false;
+			swagNote.visible = false;
 
 			unspawnNotes.push(swagNote);
 
@@ -401,7 +404,6 @@ class PlayState extends FlxTransitionableState
 
 		if (health <= 0)
 		{
-			boyfriend.stunned = true;
 			FlxG.switchState(new GameOverState());
 		}
 
@@ -456,6 +458,14 @@ class PlayState extends FlxTransitionableState
 		{
 			notes.forEachAlive(function(daNote:Note)
 			{
+				daNote.y = strumLine.y-(0.45 * (Conductor.songPosition - daNote.strumTime) * scrollSpeed);
+
+				if (daNote.y <= FlxG.height)
+				{
+					daNote.visible = true;
+					daNote.active = true;
+				}
+
 				if (!daNote.mustPress && daNote.wasGoodHit)
 				{
 					switch (Math.abs(daNote.noteData))
@@ -475,29 +485,12 @@ class PlayState extends FlxTransitionableState
 					daNote.destroy();
 				}
 
-				daNote.y = strumLine.y-(0.45 * (Conductor.songPosition - daNote.strumTime) * scrollSpeed);
-
-				if (daNote.y > FlxG.height)
-				{
-					daNote.active = false;
-					daNote.visible = false;
-				}
-				else
-				{
-					daNote.visible = true;
-					daNote.active = true;
-				}
-
 				if (daNote.y < -daNote.height)
 				{
 					if (daNote.tooLate)
 					{
-						health -= 0.05;
-						vocalsPlayer.volume = 0;
+						noteMiss(daNote.noteData,false);
 					}
-
-					daNote.active = false;
-					daNote.visible = false;
 
 					daNote.kill();
 					notes.remove(daNote, true);
@@ -614,7 +607,7 @@ class PlayState extends FlxTransitionableState
 		var leftR = FlxG.keys.anyJustReleased([A, LEFT]);
 
 		FlxG.watch.addQuick('asdfa', upP);
-		if ((upP || rightP || downP || leftP) && !boyfriend.stunned && generatedMusic)
+		if ((upP || rightP || downP || leftP) && generatedMusic)
 		{
 			var possibleNotes:Array<Note> = [];
 
@@ -660,7 +653,7 @@ class PlayState extends FlxTransitionableState
 			}
 		}
 
-		if ((up || right || down || left) && !boyfriend.stunned && generatedMusic)
+		if ((up || right || down || left) && generatedMusic)
 		{
 			notes.forEach(function(daNote:Note)
 			{
@@ -723,38 +716,30 @@ class PlayState extends FlxTransitionableState
 		});
 	}
 
-	function noteMiss(direction:Int = 1):Void
+	function noteMiss(direction:Int = 1,?ghostHit:Bool = true):Void
 	{
-		if (!boyfriend.stunned)
-		{
+		if(ghostHit)
 			health -= 0.08;
-			if (combo > 5)
-			{
-				gf.playSpecialAnim('sad');
-			}
-			combo = 0;
+		else
+			health -= 0.05;
+		if (combo > 5)
+		{
+			gf.playSpecialAnim('sad');
+		}
+		combo = 0;
 
-			FlxG.sound.play(Paths.sound('missnote'+FlxG.random.int(1, 3)), FlxG.random.float(0.05, 0.2));
+		FlxG.sound.play(Paths.sound('missnote'+FlxG.random.int(1, 3)), FlxG.random.float(0.05, 0.2));
 
-			boyfriend.stunned = true;
-
-			// get stunned for 5 seconds
-			new FlxTimer().start(5 / 60, function(tmr:FlxTimer)
-			{
-				boyfriend.stunned = false;
-			});
-
-			switch (direction)
-			{
-				case 1:
-					boyfriend.playSpecialAnim('singLEFTmiss');
-				case 2:
-					boyfriend.playSpecialAnim('singDOWNmiss');
-				case 3:
-					boyfriend.playSpecialAnim('singUPmiss');
-				case 4:
-					boyfriend.playSpecialAnim('singRIGHTmiss');
-			}
+		switch (direction)
+		{
+			case 1:
+				boyfriend.playSpecialAnim('singLEFTmiss');
+			case 2:
+				boyfriend.playSpecialAnim('singDOWNmiss');
+			case 3:
+				boyfriend.playSpecialAnim('singUPmiss');
+			case 4:
+				boyfriend.playSpecialAnim('singRIGHTmiss');
 		}
 	}
 
