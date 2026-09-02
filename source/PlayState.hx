@@ -217,11 +217,11 @@ class PlayState extends FlxTransitionableState
 
 		scrollSpeed = songChartData.scrollSpeed.hard;
 
-		FlxG.sound.playMusic("assets/music/" + dataPath + "/Inst.ogg");
+		FlxG.sound.playMusic(Paths.inst(dataPath));
 		FlxG.sound.music.pause();
-		vocalsOpponent = new FlxSound().loadEmbedded("assets/music/" + dataPath + "/Voices-"+opponentCharacter+".ogg");
+		vocalsOpponent = new FlxSound().loadEmbedded(Paths.vocals(dataPath,opponentCharacter));
 		FlxG.sound.list.add(vocalsOpponent);
-		vocalsPlayer = new FlxSound().loadEmbedded("assets/music/" + dataPath + "/Voices-"+playerCharacter+".ogg");
+		vocalsPlayer = new FlxSound().loadEmbedded(Paths.vocals(dataPath,playerCharacter));
 		FlxG.sound.list.add(vocalsPlayer);
 
 		events = songChartData.events;

@@ -15,6 +15,18 @@ class Paths
     {
         return "assets/sounds/"+key+".ogg";
     }
+    inline public static function music(key:String)
+    {
+        return "assets/music/"+key+".ogg";
+    }
+    inline public static function inst(songId:String)
+    {
+        return "assets/songs/"+songId+"/Inst.ogg";
+    }
+    inline public static function vocals(songId:String,charId:String)
+    {
+        return "assets/songs/"+songId+"/Voices-"+charId+".ogg";
+    }
 
     public static function fromSparrow(key:String)
     {
