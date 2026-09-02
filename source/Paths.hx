@@ -27,6 +27,14 @@ class Paths
     {
         return "assets/songs/"+songId+"/Voices-"+charId+".ogg";
     }
+    inline public static function songChart(songId:String)
+    {
+        return "assets/data/"+songId+"/"+songId+"-chart.json";
+    }
+    inline public static function songMetadata(songId:String)
+    {
+        return "assets/data/"+songId+"/"+songId+"-metadata.json";
+    }
 
     public static function fromSparrow(key:String)
     {

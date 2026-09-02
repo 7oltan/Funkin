@@ -196,8 +196,8 @@ class PlayState extends FlxTransitionableState
 		// FlxG.log.add(ChartParser.parse());
 		generatedMusic = true;
 
-		var songChartData = Json.parse(Assets.getText('assets/data/' + dataPath + '/' + dataPath + '-chart.json'));
-		var songMetaData = Json.parse(Assets.getText('assets/data/' + dataPath + '/' + dataPath + '-metadata.json'));
+		var songChartData = Json.parse(Assets.getText(Paths.songChart(dataPath)));
+		var songMetaData = Json.parse(Assets.getText(Paths.songMetadata(dataPath)));
 		var timeChanges:Array<Dynamic> = songMetaData.timeChanges;
 		var opponentCharacter:String = songMetaData.playData.characters.opponent;
 		var playerCharacter:String = songMetaData.playData.characters.player;
