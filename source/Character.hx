@@ -33,8 +33,6 @@ class Character extends FlxSprite
 				addOffset('sad');
 				addOffset('danceLeft');
 				addOffset('danceRight');
-
-				playAnim('danceRight',true);
 				danceIntervals = 1;
 			case "dad":
 				frames = Paths.fromSparrow("DADDY_DEAREST");
@@ -49,8 +47,6 @@ class Character extends FlxSprite
 				addOffset("singRIGHT", 0, 27);
 				addOffset("singLEFT", -10, 10);
 				addOffset("singDOWN", 0, -30);
-
-				playAnim('idle');
 			case "bf":
 				frames = Paths.fromSparrow('BOYFRIEND');
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
@@ -74,8 +70,6 @@ class Character extends FlxSprite
 				addOffset("singLEFTmiss", 12, 24);
 				addOffset("singDOWNmiss", -11, -19);
 				addOffset("hey", 7, 4);
-
-				playAnim('idle');
 			case "spooky":
 				frames = Paths.fromSparrow('SpookyKids');
 				animation.addByIndices('danceLeft', 'spooky dance idle0', [0, 1, 2, 3, 4, 5, 6, 7], "", 24, false);
@@ -91,9 +85,11 @@ class Character extends FlxSprite
 				addOffset("singRIGHT", -125, -12);
 				addOffset("singLEFT", 120,-8);
 				addOffset("singDOWN", -40, -147);
-				playAnim('danceRight',true);
 				danceIntervals = 1;
 		}
+		dance();
+		updateHitbox();
+		this.y = y-this.height;
 		antialiasing = true;
 	}
 

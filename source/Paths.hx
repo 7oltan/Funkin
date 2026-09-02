@@ -11,6 +11,11 @@ class Paths
     {
         return "assets/images/"+key+".png";
     }
+    inline public static function sound(key:String)
+    {
+        return "assets/sounds/"+key+".ogg";
+    }
+
     public static function fromSparrow(key:String)
     {
         return FlxAtlasFrames.fromSparrow(image(key), xml(key));

@@ -118,51 +118,27 @@ class PlayState extends FlxTransitionableState
 		{
 			currentBeat = swagCounter-5;
 			beatHit();
-			switch (swagCounter)
+
+			var countdownSounds:Array<String> = ['intro3','intro2','intro1','introGo'];
+			var countdownGraphics:Array<String> = ['','ready','set','go'];
+
+			if(countdownGraphics[swagCounter] != '')
 			{
-				case 0:
-					FlxG.sound.play('assets/sounds/intro3.ogg', 0.6);
-				case 1:
-					var ready:FlxSprite = new FlxSprite().loadGraphic('assets/images/ready.png');
-					ready.scrollFactor.set();
-					ready.screenCenter();
-					add(ready);
-					FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-						ease: FlxEase.cubeInOut,
-						onComplete: function(twn:FlxTween)
-						{
-							ready.destroy();
-						}
-					});
-					FlxG.sound.play('assets/sounds/intro2.ogg', 0.6);
-				case 2:
-					var set:FlxSprite = new FlxSprite().loadGraphic('assets/images/set.png');
-					set.scrollFactor.set();
-					set.screenCenter();
-					add(set);
-					FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-						ease: FlxEase.cubeInOut,
-						onComplete: function(twn:FlxTween)
-						{
-							set.destroy();
-						}
-					});
-					FlxG.sound.play('assets/sounds/intro1.ogg', 0.6);
-				case 3:
-					var go:FlxSprite = new FlxSprite().loadGraphic('assets/images/go.png');
-					go.scrollFactor.set();
-					go.screenCenter();
-					add(go);
-					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-						ease: FlxEase.cubeInOut,
-						onComplete: function(twn:FlxTween)
-						{
-							go.destroy();
-						}
-					});
-					FlxG.sound.play('assets/sounds/introGo.ogg', 0.6);
+				var countdownSprite:FlxSprite = new FlxSprite().loadGraphic(Paths.image(countdownGraphics[swagCounter]));
+				countdownSprite.scrollFactor.set();
+				countdownSprite.screenCenter();
+				add(countdownSprite);
+				FlxTween.tween(countdownSprite, {y: countdownSprite.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					ease: FlxEase.cubeInOut,
+					onComplete: function(twn:FlxTween)
+					{
+						countdownSprite.destroy();
+					}
+				});
 			}
 
+
+			FlxG.sound.play(Paths.sound(countdownSounds[swagCounter]), 0.6);
 			swagCounter += 1;
 		}, 4);
 
@@ -227,14 +203,14 @@ class PlayState extends FlxTransitionableState
 		var playerCharacter:String = songMetaData.playData.characters.player;
 		var gfCharacter:String = songMetaData.playData.characters.girlfriend;
 
-		gf = new Character(400, 130,gfCharacter);
+		gf = new Character(400, 730,gfCharacter);
 		gf.scrollFactor.set(0.95, 0.95);
 		add(gf);
 
-		dad = new Character(100, 100,opponentCharacter);
+		dad = new Character(100, 850,opponentCharacter);
 		add(dad);
 
-		boyfriend = new Character(770, 450,playerCharacter);
+		boyfriend = new Character(770, 850,playerCharacter);
 		add(boyfriend);
 		
 		Conductor.changeBPM(timeChanges[0].bpm);
@@ -586,7 +562,7 @@ class PlayState extends FlxTransitionableState
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
 		{
-			var numScore:FlxSprite = new FlxSprite().loadGraphic('assets/images/num' + Std.int(i) + '.png');
+			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image('num'+ Std.int(i)));
 			numScore.screenCenter();
 			numScore.x = coolText.x + (43 * daLoop) - 90;
 			numScore.y += 80;
@@ -773,7 +749,7 @@ class PlayState extends FlxTransitionableState
 			}
 			combo = 0;
 
-			FlxG.sound.play('assets/sounds/missnote' + FlxG.random.int(1, 3) + ".ogg", FlxG.random.float(0.05, 0.2));
+			FlxG.sound.play(Paths.sound('missnote'+FlxG.random.int(1, 3)), FlxG.random.float(0.05, 0.2));
 
 			boyfriend.stunned = true;
 
