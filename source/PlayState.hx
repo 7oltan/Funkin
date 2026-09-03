@@ -56,11 +56,11 @@ class PlayState extends FlxTransitionableState
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
+	private var healthHeads:FlxSprite;
 
 	private var generatedMusic:Bool = false;
 	private var countingDown:Bool = false;
 
-	private var healthHeads:FlxSprite;
 
 	override public function create()
 	{
@@ -169,16 +169,23 @@ class PlayState extends FlxTransitionableState
 		add(healthBar);
 
 		healthHeads = new FlxSprite();
-		var headTex = FlxAtlasFrames.fromSparrow(Paths.image("healthHeads"), Paths.xml("healthHeads"));
-		healthHeads.frames = headTex;
+		healthHeads.frames = Paths.fromSparrow("healthHeads");
 		healthHeads.animation.add('healthy', [0]);
 		healthHeads.animation.add('unhealthy', [1]);
-		healthHeads.y = healthBar.y - (healthHeads.height / 2);
+		healthHeads.antialiasing = true;
 		healthHeads.scrollFactor.set();
 		add(healthHeads);
 
+		updateHealthHeadsPos();
 
 		super.create();
+	}
+
+	function updateHealthHeadsPos()
+	{
+		healthHeads.updateHitbox();
+		healthHeads.y = healthBar.y + (healthBar.height / 2) - (healthHeads.height/2);
+		healthHeads.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (healthHeads.width / 2);
 	}
 
 	function startSong():Void
@@ -340,8 +347,8 @@ class PlayState extends FlxTransitionableState
 	{
 		super.update(elapsed);
 
-		healthHeads.setGraphicSize(Std.int(FlxMath.lerp(100, healthHeads.width, 0.98)));
-		healthHeads.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (healthHeads.width / 2);
+		healthHeads.scale.y = healthHeads.scale.x = FlxMath.lerp(1, healthHeads.scale.x, 0.8);
+		updateHealthHeadsPos();
 
 		if (healthBar.percent < 10)
 			healthHeads.animation.play('unhealthy');
@@ -400,6 +407,8 @@ class PlayState extends FlxTransitionableState
 		{
 			FlxG.switchState(new GameOverState());
 		}
+		if(health > 2)
+			health = 2;
 
 		if(FlxG.keys.justPressed.ENTER)
 		{
@@ -809,7 +818,8 @@ class PlayState extends FlxTransitionableState
 		if (camZooming && FlxG.camera.zoom < 1.35 && currentBeat % 4 == 0)
 			FlxG.camera.zoom += 0.025;
 
-		healthHeads.setGraphicSize(Std.int(healthHeads.width + 20));
+		healthHeads.scale.set(1.1,1.1);
+		updateHealthHeadsPos();
 
 		if(currentBeat % dad.danceIntervals == 0)
 			dad.dance();
