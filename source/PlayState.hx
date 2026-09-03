@@ -35,6 +35,7 @@ class PlayState extends FlxTransitionableState
 	private var dad:Character;
 	private var gf:Character;
 	private var boyfriend:Character;
+	private var stage:Stage;
 
 	private var scrollSpeed:Float = 1.0;
 	private var notes:FlxTypedGroup<Note>;
@@ -66,31 +67,6 @@ class PlayState extends FlxTransitionableState
 	{
 		persistentUpdate = true;
 		persistentDraw = true;
-
-		var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image("stageback"));
-		// bg.setGraphicSize(Std.int(bg.width * 2.5));
-		// bg.updateHitbox();
-		bg.antialiasing = true;
-		bg.scrollFactor.set(0.9, 0.9);
-		bg.active = false;
-		add(bg);
-
-		var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image("stagefront"));
-		stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-		stageFront.updateHitbox();
-		stageFront.antialiasing = true;
-		stageFront.scrollFactor.set(0.9, 0.9);
-		stageFront.active = false;
-		add(stageFront);
-
-		var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image("stagecurtains"));
-		stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-		stageCurtains.updateHitbox();
-		stageCurtains.antialiasing = true;
-		stageCurtains.scrollFactor.set(1.3, 1.3);
-		stageCurtains.active = false;
-
-		add(stageCurtains);
 
 		generateSong(curSong.toLowerCase());
 
@@ -215,19 +191,23 @@ class PlayState extends FlxTransitionableState
 		var songChartData = Json.parse(Assets.getText(Paths.songChart(dataPath)));
 		var songMetaData = Json.parse(Assets.getText(Paths.songMetadata(dataPath)));
 		var timeChanges:Array<Dynamic> = songMetaData.timeChanges;
+		var stageId:String = songMetaData.playData.stage;
 		var opponentCharacter:String = songMetaData.playData.characters.opponent;
 		var playerCharacter:String = songMetaData.playData.characters.player;
 		var gfCharacter:String = songMetaData.playData.characters.girlfriend;
 
+		stage = new Stage(stageId);
+		add(stage);
+
 		gf = new Character(400, 730,gfCharacter);
 		gf.scrollFactor.set(0.95, 0.95);
-		add(gf);
+		stage.add(gf);
 
 		dad = new Character(100, 850,opponentCharacter);
-		add(dad);
+		stage.add(dad);
 
 		boyfriend = new Character(770, 850,playerCharacter);
-		add(boyfriend);
+		stage.add(boyfriend);
 		
 		Conductor.changeBPM(timeChanges[0].bpm);
 
@@ -827,6 +807,8 @@ class PlayState extends FlxTransitionableState
 			boyfriend.dance();
 		if(currentBeat % gf.danceIntervals == 0)
 			gf.dance();
+
+		stage.beatHit(currentBeat);
 
 	}
 	private function stepHit():Void
