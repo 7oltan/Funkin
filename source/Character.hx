@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 
 class Character extends FlxSprite
 {
+	private final characterList:Array<String> = ['gf','dad','bf','spooky'];
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 	public var charId:String = "";
@@ -20,8 +21,11 @@ class Character extends FlxSprite
 		super(x, y);
 		this.charId = charId;
 		animOffsets = new Map<String, Array<Dynamic>>();
+	
+		if(!characterList.contains(this.charId))
+			this.charId = 'dad';
 
-		switch(charId)
+		switch(this.charId)
 		{
 			case "gf":
 				frames = Paths.fromSparrow("GF_assets");

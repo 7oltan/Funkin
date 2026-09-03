@@ -8,7 +8,7 @@ import flixel.addons.transition.FlxTransitionableState;
 
 class FreeplayState extends FlxTransitionableState
 {
-	var songList:Array<String> = ['bopeebo','fresh','dad-battle','spookeez','south'];
+	var songList:Array<String> = ['bopeebo','fresh','dad-battle','spookeez','south','monster'];
 	var difficultyList:Array<String> = ['easy','normal','hard'/**,'erect','nightmare'**/];
 	var songTextGroup:Array<FlxText> = [];
 	var difficultyText:FlxText;
