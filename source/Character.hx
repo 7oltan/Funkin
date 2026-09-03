@@ -76,20 +76,23 @@ class Character extends FlxSprite
 				addOffset("singDOWNmiss", -11, -19);
 				addOffset("hey", 7, 4);
 			case "spooky":
-				frames = Paths.fromSparrow('SpookyKids');
-				animation.addByIndices('danceLeft', 'spooky dance idle0', [0, 1, 2, 3, 4, 5, 6, 7], "", 24, false);
-				animation.addByIndices('danceRight', 'spooky dance idle0', [8, 9, 10, 11, 12, 13, 14, 15], "", 24, false);
+				frames = Paths.fromSparrow('spooky_kids_assets');
+		
 				animation.addByPrefix('singUP', 'spooky UP NOTE', 24, false);
+				animation.addByPrefix('singDOWN', 'spooky DOWN note', 24, false);
 				animation.addByPrefix('singLEFT', 'note sing left', 24, false);
 				animation.addByPrefix('singRIGHT', 'spooky sing right', 24, false);
-				animation.addByPrefix('singDOWN', 'spooky DOWN note', 24, false);
+				animation.addByIndices('danceLeft', 'spooky dance idle', [0, 2, 6], "", 12, false);
+				animation.addByIndices('danceRight', 'spooky dance idle', [8, 10, 12, 14], "", 12, false);
 
 				addOffset('danceLeft');
 				addOffset('danceRight');
-				addOffset("singUP", -29, 27);
-				addOffset("singRIGHT", -125, -12);
-				addOffset("singLEFT", 120,-8);
-				addOffset("singDOWN", -40, -147);
+
+				addOffset("singUP", -20, 26);
+				addOffset("singRIGHT", -130, -14);
+				addOffset("singLEFT", 130, -10);
+				addOffset("singDOWN", -50, -130);
+
 				danceIntervals = 1;
 			case "monster":
 				frames = Paths.fromSparrow("Monster_Assets");
