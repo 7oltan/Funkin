@@ -5,7 +5,7 @@ import flixel.FlxSprite;
 
 class Character extends FlxSprite
 {
-	private final characterList:Array<String> = ['gf','dad','bf','spooky'];
+	private final characterList:Array<String> = ['gf','dad','bf','spooky','monster'];
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var debugMode:Bool = false;
 	public var charId:String = "";
@@ -91,6 +91,19 @@ class Character extends FlxSprite
 				addOffset("singLEFT", 120,-8);
 				addOffset("singDOWN", -40, -147);
 				danceIntervals = 1;
+			case "monster":
+				frames = Paths.fromSparrow("Monster_Assets");
+				animation.addByPrefix('idle', 'monster idle', 24,false);
+				animation.addByPrefix('singUP', 'monster up note', 24, false);
+				animation.addByPrefix('singDOWN', 'monster down', 24, false);
+				animation.addByPrefix('singLEFT', 'Monster left note', 24, false);
+				animation.addByPrefix('singRIGHT', 'Monster Right note', 24, false);
+
+				addOffset('idle');
+				addOffset("singUP", -20, 50);
+				addOffset("singRIGHT", -51);
+				addOffset("singLEFT", -30);
+				addOffset("singDOWN", -30, -40);
 		}
 		dance();
 		animation.finish();
